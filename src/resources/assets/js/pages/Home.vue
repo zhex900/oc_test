@@ -79,6 +79,8 @@
                 <v-card-title>
                     <v-icon>filter_list</v-icon>
                     <h4>Filters {{filterOnStringify}}</h4>
+                    <v-spacer></v-spacer>
+                    <v-btn outline color="white" @click="resetFilter">Reset</v-btn>
                 </v-card-title>
                 <v-container fluid grid-list-lg>
                     <v-layout align-center justify-space-around row wrap>
@@ -209,6 +211,12 @@ export default {
     },
 
     methods: {
+         resetFilter(){
+            this.clear();
+            this.filterExpireIn30Days=false;
+            this.filterMemberOnly=false;
+            this.filterFirstName = this.filterLastName = this.filterPhone = "";
+        },
         clear () {
             // if cachedEntries is not empty
             this.entries = this.cachedEntries;

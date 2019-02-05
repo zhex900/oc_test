@@ -70915,6 +70915,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
 
 // import _ from 'lodash';
 
@@ -71117,6 +71119,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
 
     methods: {
+        resetFilter: function resetFilter() {
+            this.clear();
+            this.filterExpireIn30Days = false;
+            this.filterMemberOnly = false;
+            this.filterFirstName = this.filterLastName = this.filterPhone = "";
+        },
         clear: function clear() {
             // if cachedEntries is not empty
             this.entries = this.cachedEntries;
@@ -75675,7 +75683,20 @@ var render = function() {
                 [
                   _c("v-icon", [_vm._v("filter_list")]),
                   _vm._v(" "),
-                  _c("h4", [_vm._v("Filters " + _vm._s(_vm.filterOnStringify))])
+                  _c("h4", [
+                    _vm._v("Filters " + _vm._s(_vm.filterOnStringify))
+                  ]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { outline: "", color: "white" },
+                      on: { click: _vm.resetFilter }
+                    },
+                    [_vm._v("Reset")]
+                  )
                 ],
                 1
               ),
