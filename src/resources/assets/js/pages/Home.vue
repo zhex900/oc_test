@@ -4,13 +4,15 @@
         <v-toolbar :color="filterIndicator[filterOn]" dark fixed>
 
             <v-toolbar-side-icon @click="showFilters = !showFilters">
-                <v-icon>filter_list</v-icon>
-                {{isFilterOn}}
+                <div class="elevation-1">
+                    <v-icon>filter_list</v-icon>
+                    {{isFilterOn}}
+                </div>
             </v-toolbar-side-icon>
 
-            <v-autocomplete v-model="model" :items="items" :loading="isLoading" :search-input.sync="search" color="white" cache-items flat hide-no-data hide-details item-text="searchable" item-value="first_name" label="Client Lookup" placeholder="Search by name or phone number" prepend-icon="mdi-database-search" return-object>
+            <v-autocomplete v-model="model" :items="items" :loading="isLoading" :search-input.sync="search" color="white" cache-items flat hide-no-data hide-details item-text="searchable" item-value="first_name" label="Client Lookup" placeholder="Search by first name, last name or phone number" prepend-icon="mdi-database-search" return-object>
                 <template slot="selection" slot-scope="data">
-                    <v-chip :selected="data.selected" close @input="clear">
+                    <v-chip color="rgb(74, 164, 114)" :selected="data.selected" close @input="clear">
                         <v-avatar>
                             <img :src="data.item.image">
                         </v-avatar>
@@ -132,6 +134,7 @@
 </template>
 
 <script>
+// import _ from 'lodash';
 import axios from 'axios';
 import { format, parse } from "date-fns";
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
@@ -140,6 +143,7 @@ import { resolve, filter } from 'bluebird';
 
     export default {
     data: () => ({
+        cachedEntries:[],
         filterOn:false,
         filterIndicator:{ false : 'teal lighten-1', true: 'pink lighten-1'},
         filterFirstName: '',
@@ -213,6 +217,13 @@ import { resolve, filter } from 'bluebird';
 
 
     watch: {
+        model(val){
+            console.log(val);
+            if( val instanceof Object) {
+                this.cachedEntries=this.entries;
+                this.entries=[val];
+            }
+        },
         async filterFirstName(val){
             console.log(val);
             this.filterOn=(val.length!=0);
@@ -254,60 +265,63 @@ import { resolve, filter } from 'bluebird';
     },
 
     methods: {
-    closeToExpire(date){
-        let diff = differenceInCalendarDays(parse(date), new Date() );
-        if(diff<=30){
-            return 'blinking';
-        }else{
-            return'';
-        }
-    },
-    customFilter(items, search, filter) {
-
-            // search = search.id.toLowerCase()
-            return items.filter(row => filter(row["id"], search.id));
-
-      },
-      fdate(date){
-        return format(parse(date),'ddd DD/MM/YYYY');
-      },
-      until(date){
-          return distanceInWordsToNow(parse(date))
-      },
-      clear () {
-        this.model='';
-      },
-      querySelections (val=null) {
-          // build the query paramaters
-        this.isLoading = true
-
-        // Lazily load input items
-        let params = {
-            params: {
-                first_name: val
+        closeToExpire(date){
+            let diff = differenceInCalendarDays(parse(date), new Date() );
+            if(diff<=30){
+                return 'blinking';
+            }else{
+                return'';
             }
-        };
-        if(this.filterFirstName!=""){
-            params.params.first_name=this.filterFirstName
+        },
+        customFilter(items, search, filter) {
+
+                // search = search.id.toLowerCase()
+                return items.filter(row => filter(row["id"], search.id));
+
+        },
+        fdate(date){
+            return format(parse(date),'ddd DD/MM/YYYY');
+        },
+        until(date){
+            return distanceInWordsToNow(parse(date))
+        },
+        clear () {
+            // if cachedEntries is not empty
+            this.entries = this.cachedEntries; //_.map(this.cachedEntries, _.clone);
+            console.log(this.entries);
+            this.model='';
+        },
+        querySelections (val=null) {
+            // build the query paramaters
+            this.isLoading = true
+
+            // Lazily load input items
+            let params = {
+                params: {
+                    first_name: val
+                }
+            };
+            if(this.filterFirstName!=""){
+                params.params.first_name=this.filterFirstName
+            }
+            if(this.filterLastName!=""){
+                params.params.last_name=this.filterLastName
+            }
+            if(this.filterPhone!=""){
+                params.params.phone=this.filterPhone
+            }
+            if( val == "" && !this.filterOn ){
+                params = null
+            }
+            return axios.get('/api/search',params)
+            .then(response => {
+                this.entries = response.data;
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => (this.isLoading = false))
         }
-        if(this.filterLastName!=""){
-            params.params.last_name=this.filterLastName
-        }
-        if(this.filterPhone!=""){
-            params.params.phone=this.filterPhone
-        }
-        if( val == "" && !this.filterOn ){
-            params = null
-        }
-        return axios.get('/api/search',params)
-          .then(response => {
-            this.entries = response.data;
-          })
-          .catch(err => {
-            console.log(err)
-          })
-          .finally(() => (this.isLoading = false))
-      }
     },
     mounted() {
         // fetch all the clients

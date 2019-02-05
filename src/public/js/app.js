@@ -70938,7 +70938,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
 
+// import _ from 'lodash';
 
 
 
@@ -70948,6 +70951,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            cachedEntries: [],
             filterOn: false,
             filterIndicator: { false: 'teal lighten-1', true: 'pink lighten-1' },
             filterFirstName: '',
@@ -71010,6 +71014,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
 
     watch: {
+        model: function model(val) {
+            console.log(val);
+            if (val instanceof Object) {
+                this.cachedEntries = this.entries;
+                this.entries = [val];
+            }
+        },
         filterFirstName: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(val) {
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -71179,6 +71190,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             return __WEBPACK_IMPORTED_MODULE_3_date_fns_distance_in_words_to_now___default()(Object(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"])(date));
         },
         clear: function clear() {
+            // if cachedEntries is not empty
+            this.entries = this.cachedEntries; //_.map(this.cachedEntries, _.clone);
+            console.log(this.entries);
             this.model = '';
         },
         querySelections: function querySelections() {
@@ -81058,10 +81072,20 @@ var render = function() {
               }
             },
             [
-              _c("v-icon", [_vm._v("filter_list")]),
-              _vm._v("\n            " + _vm._s(_vm.isFilterOn) + "\n        ")
-            ],
-            1
+              _c(
+                "div",
+                { staticClass: "elevation-1" },
+                [
+                  _c("v-icon", [_vm._v("filter_list")]),
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.isFilterOn) +
+                      "\n            "
+                  )
+                ],
+                1
+              )
+            ]
           ),
           _vm._v(" "),
           _c("v-autocomplete", {
@@ -81077,7 +81101,7 @@ var render = function() {
               "item-text": "searchable",
               "item-value": "first_name",
               label: "Client Lookup",
-              placeholder: "Search by name or phone number",
+              placeholder: "Search by first name, last name or phone number",
               "prepend-icon": "mdi-database-search",
               "return-object": ""
             },
@@ -81094,7 +81118,11 @@ var render = function() {
                     _c(
                       "v-chip",
                       {
-                        attrs: { selected: data.selected, close: "" },
+                        attrs: {
+                          color: "rgb(74, 164, 114)",
+                          selected: data.selected,
+                          close: ""
+                        },
                         on: { input: _vm.clear }
                       },
                       [
