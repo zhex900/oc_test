@@ -70408,7 +70408,7 @@ exports = module.exports = __webpack_require__(34)(false);
 
 
 // module
-exports.push([module.i, "\n.compact-form[data-v-440dff1c] {\n  -webkit-transform: scale(0.875);\n          transform: scale(0.875);\n  -webkit-transform-origin: left;\n          transform-origin: left;\n}\n.logo[data-v-440dff1c] {\n  font-weight: 400;\n  padding-top: 4px;\n  font-size: 25px;\n  color: rgb(74, 164, 114);\n  font-style: italic;\n}\n.blinking[data-v-440dff1c] {\n  -webkit-animation: blinkingText-data-v-440dff1c 3s infinite;\n          animation: blinkingText-data-v-440dff1c 3s infinite;\n  font-weight: bold;\n}\n@-webkit-keyframes blinkingText-data-v-440dff1c {\n0% {\n    color: red;\n}\n49% {\n    color: brown;\n}\n50% {\n    color: black;\n}\n99% {\n    color: gray;\n}\n100% {\n    color: red;\n}\n}\n@keyframes blinkingText-data-v-440dff1c {\n0% {\n    color: red;\n}\n49% {\n    color: brown;\n}\n50% {\n    color: black;\n}\n99% {\n    color: gray;\n}\n100% {\n    color: red;\n}\n}\n", ""]);
+exports.push([module.i, "\n.logo[data-v-440dff1c] {\n  font-weight: 400;\n  padding-top: 4px;\n  font-size: 25px;\n  color: rgb(74, 164, 114);\n  font-style: italic;\n}\n.blinking[data-v-440dff1c] {\n  -webkit-animation: blinkingText-data-v-440dff1c 3s infinite;\n          animation: blinkingText-data-v-440dff1c 3s infinite;\n  font-weight: bold;\n}\n@-webkit-keyframes blinkingText-data-v-440dff1c {\n0% {\n    color: red;\n}\n49% {\n    color: brown;\n}\n50% {\n    color: black;\n}\n99% {\n    color: gray;\n}\n100% {\n    color: red;\n}\n}\n@keyframes blinkingText-data-v-440dff1c {\n0% {\n    color: red;\n}\n49% {\n    color: brown;\n}\n50% {\n    color: black;\n}\n99% {\n    color: gray;\n}\n100% {\n    color: red;\n}\n}\n", ""]);
 
 // exports
 
@@ -71199,7 +71199,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 params.params.first_name = this.filterFirstName;
             }
             if (this.filterLastName != "") {
-                params.params.first_name = this.filterLastName;
+                params.params.last_name = this.filterLastName;
             }
             if (this.filterPhone != "") {
                 params.params.phone = this.filterPhone;
@@ -81486,7 +81486,6 @@ var render = function() {
       _c(
         "v-bottom-sheet",
         {
-          staticClass: "compact-form",
           attrs: { inset: "" },
           model: {
             value: _vm.showFilters,
@@ -81499,14 +81498,17 @@ var render = function() {
         [
           _c(
             "v-card",
-            { attrs: { flat: "" } },
+            {
+              staticClass: "white--text",
+              attrs: { flat: "", color: _vm.filterIndicator[_vm.filterOn] }
+            },
             [
               _c(
                 "v-card-title",
                 [
                   _c("v-icon", [_vm._v("filter_list")]),
                   _vm._v(" "),
-                  _c("h4", [_vm._v("Filters")])
+                  _c("h4", [_vm._v("Filters " + _vm._s(_vm.isFilterOn))])
                 ],
                 1
               ),
@@ -81531,7 +81533,11 @@ var render = function() {
                         { attrs: { xs12: "", sm6: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { box: "", label: "First Name" },
+                            attrs: {
+                              box: "",
+                              color: "white",
+                              label: "First Name"
+                            },
                             model: {
                               value: _vm.filterFirstName,
                               callback: function($$v) {
@@ -81549,7 +81555,11 @@ var render = function() {
                         { attrs: { xs12: "", sm6: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { box: "", label: "Last Name" },
+                            attrs: {
+                              box: "",
+                              color: "white",
+                              label: "Last Name"
+                            },
                             model: {
                               value: _vm.filterLastName,
                               callback: function($$v) {
@@ -81567,7 +81577,7 @@ var render = function() {
                         { attrs: { xs12: "", sm6: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { box: "", label: "Phone" },
+                            attrs: { box: "", color: "white", label: "Phone" },
                             model: {
                               value: _vm.filterPhone,
                               callback: function($$v) {
@@ -81596,7 +81606,7 @@ var render = function() {
                                 [
                                   _c("v-switch", {
                                     attrs: {
-                                      color: "primary",
+                                      color: "white",
                                       label: "Members only"
                                     },
                                     model: {
@@ -81610,7 +81620,7 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("v-switch", {
                                     attrs: {
-                                      color: "primary",
+                                      color: "white",
                                       label: "Membership expire within 30 days"
                                     },
                                     model: {

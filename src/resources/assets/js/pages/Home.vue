@@ -97,28 +97,28 @@
                 </v-data-table>
             </v-card>
         </v-content>
-        <v-bottom-sheet class='compact-form' inset v-model="showFilters">
-            <v-card flat>
+        <v-bottom-sheet inset v-model="showFilters">
+            <v-card flat class="white--text" :color="filterIndicator[filterOn]">
                 <v-card-title>
                     <v-icon>filter_list</v-icon>
-                    <h4>Filters</h4>
+                    <h4>Filters {{isFilterOn}}</h4>
                 </v-card-title>
                 <v-container fluid grid-list-lg>
                     <v-layout align-center justify-space-around row wrap>
                         <v-flex xs12 sm6>
-                            <v-text-field box v-model="filterFirstName" label="First Name"></v-text-field>
+                            <v-text-field box v-model="filterFirstName" color="white" label="First Name"></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6>
-                            <v-text-field box v-model="filterLastName" label="Last Name"></v-text-field>
+                            <v-text-field box v-model="filterLastName" color="white" label="Last Name"></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6>
-                            <v-text-field box v-model="filterPhone" label="Phone"></v-text-field>
+                            <v-text-field box v-model="filterPhone" color="white" label="Phone"></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6>
                             <v-layout align-right column wrap>
                                 <v-flex xs6 sm3>
-                                    <v-switch v-model="filterMemberOnly" color="primary" label="Members only"></v-switch>
-                                    <v-switch v-model="filterExpireIn30Days" color="primary" label="Membership expire within 30 days"></v-switch>
+                                    <v-switch v-model="filterMemberOnly" color="white" label="Members only"></v-switch>
+                                    <v-switch v-model="filterExpireIn30Days" color="white" label="Membership expire within 30 days"></v-switch>
                                 </v-flex>
                             </v-layout>
                         </v-flex>
@@ -291,7 +291,7 @@ import { resolve, filter } from 'bluebird';
             params.params.first_name=this.filterFirstName
         }
         if(this.filterLastName!=""){
-            params.params.first_name=this.filterLastName
+            params.params.last_name=this.filterLastName
         }
         if(this.filterPhone!=""){
             params.params.phone=this.filterPhone
@@ -317,10 +317,6 @@ import { resolve, filter } from 'bluebird';
 </script>
 
 <style lang="css" scoped>
-.compact-form {
-  transform: scale(0.875);
-  transform-origin: left;
-}
 .logo {
   font-weight: 400;
   padding-top: 4px;
